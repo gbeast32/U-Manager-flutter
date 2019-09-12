@@ -16,14 +16,12 @@ class _RadialMenuState extends State<RadialMenu>
     super.initState();
     controller =
         AnimationController(duration: Duration(milliseconds: 900), vsync: this);
+    controller.forward();
   }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-//      return GestureDetector(behavior:
-//      child: RadialAnimation(controller: controller),
-//    );
     return RadialAnimation(controller: controller);
   }
 
@@ -42,9 +40,8 @@ class RadialAnimation extends StatelessWidget {
             CurvedAnimation(parent: controller, curve: Curves.elasticOut)),
         rotation = Tween<double>(begin: 0, end: 360).animate(CurvedAnimation(
             parent: controller,
-            curve: Interval(0, 0.9, curve: Curves.decelerate)
-//        curve: Curves.easeInBack
-            )),
+            curve: Interval(0, 0.5, curve: Curves.decelerate)
+            ),),
         super(key: key);
   final AnimationController controller;
   final Animation<double> scale;
@@ -142,11 +139,9 @@ class RadialAnimation extends StatelessWidget {
 
   _open() {
     controller.forward();
-    print('open');
   }
 
   _close() {
     controller.reverse();
-    print('close');
   }
 }
