@@ -21,7 +21,6 @@ class _RadialMenuState extends State<RadialMenu>
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return RadialAnimation(controller: controller);
   }
 
@@ -51,6 +50,7 @@ class RadialAnimation extends StatelessWidget {
           ),
         ),
         super(key: key);
+
   List<Map<String, dynamic>> subBottomProps = [
     {
       'angle': 0.0,
