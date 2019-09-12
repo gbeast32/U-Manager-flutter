@@ -32,21 +32,96 @@ class _RadialMenuState extends State<RadialMenu>
   }
 }
 
+// ignore: must_be_immutable
 class RadialAnimation extends StatelessWidget {
+  final AnimationController controller;
+  final Animation<double> scale;
+  final Animation<double> translation;
+  final Animation<double> rotation;
+
   RadialAnimation({Key key, this.controller})
       : scale = Tween<double>(begin: 1.5, end: 0).animate(
             CurvedAnimation(parent: controller, curve: Curves.fastOutSlowIn)),
         translation = Tween<double>(begin: 0, end: 100).animate(
             CurvedAnimation(parent: controller, curve: Curves.elasticOut)),
-        rotation = Tween<double>(begin: 0, end: 360).animate(CurvedAnimation(
+        rotation = Tween<double>(begin: 0, end: 360).animate(
+          CurvedAnimation(
             parent: controller,
-            curve: Interval(0, 0.5, curve: Curves.decelerate)
-            ),),
+            curve: Interval(0, 0.5, curve: Curves.decelerate),
+          ),
+        ),
         super(key: key);
-  final AnimationController controller;
-  final Animation<double> scale;
-  final Animation<double> translation;
-  final Animation<double> rotation;
+  List<Map<String, dynamic>> subBottomProps = [
+    {
+      'angle': 0.0,
+      'color': Colors.redAccent,
+      'icon': FontAwesomeIcons.shoppingBag,
+    },
+    {
+      'angle': 45.0,
+      'color': Colors.deepOrangeAccent,
+      'icon': FontAwesomeIcons.batteryQuarter,
+    },
+    {
+      'angle': 90.0,
+      'color': Colors.deepOrange,
+      'icon': FontAwesomeIcons.batteryHalf,
+    },
+    {
+      'angle': 135.0,
+      'color': Colors.amber,
+      'icon': FontAwesomeIcons.batteryThreeQuarters,
+    },
+    {
+      'angle': 180.0,
+      'color': Colors.amberAccent,
+      'icon': FontAwesomeIcons.batteryFull,
+    },
+    {
+      'angle': 225.0,
+      'color': Colors.cyanAccent,
+      'icon': FontAwesomeIcons.batteryEmpty,
+    },
+    {
+      'angle': 270.0,
+      'color': Colors.cyanAccent,
+      'icon': FontAwesomeIcons.batteryEmpty,
+    },
+    {
+      'angle': 315.0,
+      'color': Colors.tealAccent,
+      'icon': Icons.library_add,
+    }
+  ];
+
+  Widget _buildSubBtn(double angle, {Color color, IconData icon}) {
+    final double rad = radians(angle);
+    return Transform(
+      transform: Matrix4.identity()
+        ..translate(
+            (translation.value) * cos(rad), (translation.value) * sin(rad)),
+      child: FloatingActionButton(
+        child: Icon(icon),
+        backgroundColor: color,
+        onPressed: _close,
+        elevation: 2,
+      ),
+    );
+  }
+
+  List<Widget> btnMap() => subBottomProps
+      .map((props) => _buildSubBtn(props['angle'],
+          color: props['color'], icon: props['icon']))
+      .toList();
+
+  _open() {
+    controller.forward();
+  }
+
+  _close() {
+    controller.reverse();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -60,46 +135,7 @@ class RadialAnimation extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
-                _buildSubBtn(
-                  0,
-                  color: Colors.redAccent,
-                  icon: FontAwesomeIcons.shoppingBag,
-                ),
-                _buildSubBtn(
-                  45,
-                  color: Colors.deepOrangeAccent,
-                  icon: FontAwesomeIcons.batteryQuarter,
-                ),
-                _buildSubBtn(
-                  90,
-                  color: Colors.deepOrange,
-                  icon: FontAwesomeIcons.batteryHalf,
-                ),
-                _buildSubBtn(
-                  135,
-                  color: Colors.amber,
-                  icon: FontAwesomeIcons.batteryThreeQuarters,
-                ),
-                _buildSubBtn(
-                  180,
-                  color: Colors.amberAccent,
-                  icon: FontAwesomeIcons.batteryFull,
-                ),
-                _buildSubBtn(
-                  225,
-                  color: Colors.cyanAccent,
-                  icon: FontAwesomeIcons.batteryEmpty,
-                ),
-                _buildSubBtn(
-                  270,
-                  color: Colors.blueAccent,
-                  icon: Icons.lightbulb_outline,
-                ),
-                _buildSubBtn(
-                  315,
-                  color: Colors.tealAccent,
-                  icon: Icons.library_add,
-                ),
+                ...btnMap(),
                 Transform.scale(
                   scale: scale.value - 1.5,
                   child: FloatingActionButton(
@@ -120,28 +156,5 @@ class RadialAnimation extends StatelessWidget {
         );
       },
     );
-  }
-
-  _buildSubBtn(double angle, {Color color, IconData icon}) {
-    final double rad = radians(angle);
-    return Transform(
-      transform: Matrix4.identity()
-        ..translate(
-            (translation.value) * cos(rad), (translation.value) * sin(rad)),
-      child: FloatingActionButton(
-        child: Icon(icon),
-        backgroundColor: color,
-        onPressed: _close,
-        elevation: 2,
-      ),
-    );
-  }
-
-  _open() {
-    controller.forward();
-  }
-
-  _close() {
-    controller.reverse();
   }
 }
