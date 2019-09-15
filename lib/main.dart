@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:u_manager_flutter/Screen/Home_Page/home_page.dart';
+import 'package:u_manager_flutter/Screen/search_page/search_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,7 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: SearchPage(),
     );
   }
 }
