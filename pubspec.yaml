@@ -26,6 +26,7 @@ dependencies:
   flutter_svg: ^0.14.1
   vector_math: ^2.0.8
   font_awesome_flutter: 8.4.0
+  flutter_typeahead: ^1.6.1
 
 dev_dependencies:
   flutter_test:
