@@ -24,7 +24,7 @@ class _SearchPageState extends State<SearchPage> {
     var blue = Random.secure().nextInt(255);
     return Color.fromARGB(160, red, green, blue);
   }
-
+ 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -32,47 +32,69 @@ class _SearchPageState extends State<SearchPage> {
         body: Padding(
           padding: EdgeInsets.all(16.0),
           child: Column(
-            children: <Widget>[
-              TextField(
-                controller: _myController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: new BorderRadius.only(
-                        topLeft: const Radius.circular(12),
-                        bottomLeft: const Radius.circular(12),
-                        topRight: const Radius.circular(12),
-                        bottomRight: const Radius.circular(12)),
-                    borderSide: BorderSide(color: Colors.teal),
-                  ),
-                  prefixIcon: Icon(Icons.arrow_back),
-                  contentPadding: EdgeInsets.all(10.0),
-                  hintText: 'enter something',
-                  suffixIcon: Icon(
-                    Icons.search,
-                  ),
-                ),
-                autofocus: false,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(3.0),
-                ),
-              ),
-              Wrap(
-                spacing: 5,
-                children: data
-                    .map(
-                      (chip) => Chip(
-                        label: Text(chip),
-                        backgroundColor: _randomColor(),
-                      ),
-                    )
-                    .toList(),
-              ),
-            ],
-          ),
-        ),
-      ),
+            children:<Widget>[
+            
+                          
+              TypeAheadField(
+  textFieldConfiguration: TextFieldConfiguration(
+    autofocus: true,
+    style: DefaultTextStyle.of(context).style.copyWith(
+      fontStyle: FontStyle.italic
+    ),
+    decoration: InputDecoration(
+      border: OutlineInputBorder()
+    )
+  ),
+  suggestionsCallback: (pattern) async {
+    return await BackendService.getSuggestions(pattern);
+  },
+  itemBuilder: (context, suggestion) {
+    return ListTile( 
+      title: Text(suggestion['name']),
     );
+  },
+  onSuggestionSelected: (suggestion) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => Text( suggestion)
+    ));
+  },
+),
+                      Wrap(
+                        spacing: 5,
+                        children: data
+                            .map(
+                              (chip) => Chip(
+                                label: Text(chip),
+                                backgroundColor: _randomColor(),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                      
+                        
+                        
+                      
+                        
+                        
+                      
+            ],
+                  ),
+                ),
+              ),
+            );
+        
+        
+        
+        
+
+      }
+}
+class BackendService {
+  static Future<List> getSuggestions(String query) async {
+    await Future.delayed(Duration(milliseconds: 1));
+    return List.generate(5, (index){
+       
+      return {'name': query + index.toString()};
+    });
   }
 }
