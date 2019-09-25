@@ -33,6 +33,7 @@ class _SearchPageState extends State<SearchPage> {
           padding: EdgeInsets.all(16.0),
           child: Column(
             children: <Widget>[
+              
               TypeAheadField(
                 textFieldConfiguration: TextFieldConfiguration(
                   autofocus: true,
@@ -43,7 +44,7 @@ class _SearchPageState extends State<SearchPage> {
                         onPressed: () {
                           //back to home page ?
                         }),
-                    suffixIcon: Icon(Icons.search)
+                    suffixIcon: Icon(Icons.search,color: Colors.green,)
                   ),
                 ),
                 suggestionsCallback: (pattern) async {
@@ -73,6 +74,7 @@ class _SearchPageState extends State<SearchPage> {
             ],
           ),
         ),
+        
       ),
     );
   }
