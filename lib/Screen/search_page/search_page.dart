@@ -1,6 +1,6 @@
 import 'dart:math';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -38,9 +38,12 @@ class _SearchPageState extends State<SearchPage> {
                   autofocus: true,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.arrow_back),
-                    suffixIcon: Icon(Icons.search),
-                    
+                    prefixIcon: IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        onPressed: () {
+                          //back to home page ?
+                        }),
+                    suffixIcon: Icon(Icons.search)
                   ),
                 ),
                 suggestionsCallback: (pattern) async {
